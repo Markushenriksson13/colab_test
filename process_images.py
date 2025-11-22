@@ -15,7 +15,7 @@ output_dir = Path("/workspaces/colab_test/pictures/output")
 output_dir.mkdir(parents=True, exist_ok=True)
 
 # Initialize Gemini model
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 print("✅ Setup complete!")
 print(f"Input directory: {input_dir}")
