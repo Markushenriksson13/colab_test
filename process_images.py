@@ -32,22 +32,27 @@ def generate_caption(image_path):
     try:
         img = Image.open(image_path)
         
-        prompt = """Analyze this image and create a concise, structured caption for LoRA training.
+        prompt = """Analyze this image of livapetersen and create a concise, structured caption for LoRA training.
 
-Format the caption EXACTLY like these examples:
-"livapetersen, long platinum blonde wavy hair, blue eyes, freckles, soft makeup, wearing tight white off-shoulder top, indoors, natural light"
-"livapetersen, platinum blonde ponytail, blue eyes, freckles, natural makeup, wearing shiny metallic blue swimsuit, sitting on chair, purple background lighting"
-"livapetersen, long platinum blonde hair, blue eyes, freckles, rosy cheeks, wearing red bodysuit, indoors, purple background"
+Format the caption like these examples (but describe what you ACTUALLY see in THIS image):
+"livapetersen, long blonde wavy hair, blue eyes, freckles, soft makeup, wearing tight white off-shoulder top, indoors, natural light"
+"livapetersen, blonde ponytail, blue eyes, freckles, natural makeup, wearing shiny metallic blue swimsuit, sitting on chair, purple background lighting"
+"livapetersen, long blonde hair, blue eyes, freckles, rosy cheeks, wearing red bodysuit, indoors, purple background"
 
-KEY REQUIREMENTS:
+STRUCTURE (describe what you see, maintaining consistency):
 1. Start with "livapetersen" followed by a comma
-2. Begin with hair description using "platinum blonde" consistently (e.g., "long platinum blonde wavy hair", "platinum blonde ponytail", "platinum blonde hair in bun")
-3. Follow with: blue eyes, freckles
-4. Then makeup style if visible (e.g., "soft makeup", "natural makeup", "rosy cheeks")
-5. Clothing with "wearing" (be specific but concise)
-6. End with setting/location and lighting
-7. Use SHORT comma-separated phrases, NO full sentences
-8. Keep it under 25 words after "livapetersen,"
+2. Hair description (style, color, length - be accurate to what you see)
+3. Eye color (if visible)
+4. Facial features (freckles, makeup, expression)
+5. Clothing with "wearing" (be specific)
+6. Pose or position if notable
+7. Setting/location and lighting
+
+RULES:
+- Use SHORT comma-separated phrases, NO full sentences
+- Be consistent with the person's features across all images
+- Keep it under 25 words after "livapetersen,"
+- Describe what you ACTUALLY see in the image
 
 Create the caption for this image:"""
         
