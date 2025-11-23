@@ -108,15 +108,24 @@ for idx, image_path in enumerate(image_files, 1):
 
 print(f"\n✅ Processed {len(processed_files)}/{len(image_files)} images successfully!")
 
-# Create a zip file with all the caption files
-zip_path = Path("/workspaces/colab_test/livapetersen_captions.zip")
+# Create a zip file with images and captions paired together
+zip_path = Path("/workspaces/colab_test/livapetersen_training_data.zip")
 
+print("\nCreating training data zip with images and captions...")
 with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-    for txt_file in sorted(output_dir.glob("*.txt")):
-        # Add file to zip with just the filename (no path)
-        zipf.write(txt_file, txt_file.name)
-        print(f"Added to zip: {txt_file.name}")
+    for image_path in sorted(image_files):
+        # Add the image
+        zipf.write(image_path, image_path.name)
+        print(f"Added: {image_path.name}")
+        
+        # Add matching caption file
+        caption_path = output_dir / f"{image_path.stem}.txt"
+        if caption_path.exists():
+            zipf.write(caption_path, caption_path.name)
+            print(f"Added: {caption_path.name}")
+        else:
+            print(f"⚠️  Warning: No caption found for {image_path.name}")
 
-print(f"\n✅ Created zip file: {zip_path}")
-print(f"📦 Zip contains {len(list(output_dir.glob('*.txt')))} caption files")
+print(f"\n✅ Created training data zip: {zip_path}")
+print(f"📦 Contains {len(image_files)} images and their captions")
 print(f"\nYou can download it from: {zip_path}")
