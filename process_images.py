@@ -4,9 +4,15 @@ from pathlib import Path
 import google.generativeai as genai
 from PIL import Image
 import time
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configure Gemini API
-GOOGLE_API_KEY = "AIzaSyC7G9LAbM4eXHv2xhdu3NGN_DacRFuSmlA"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY not found in .env file")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Set up paths
@@ -26,19 +32,30 @@ def generate_caption(image_path):
     try:
         img = Image.open(image_path)
         
-        prompt = """Analyze this image and create a detailed caption for LoRA training. 
-        Start the caption with "livapetersen" followed by a comma, then describe:
-        - The person's appearance, pose, and expression
-        - Clothing and styling details
-        - Background and setting
-        - Lighting and mood
-        - Any notable features
-        
-        Format: livapetersen, [detailed description]
-        Keep it concise but descriptive (1-2 sentences)."""
+        prompt = """Analyze this image and create a concise, structured caption for LoRA training.
+
+Format the caption EXACTLY like these examples:
+"livapetersen, long platinum blonde wavy hair, blue eyes, freckles, soft makeup, wearing tight white off-shoulder top, indoors, natural light"
+"livapetersen, platinum blonde ponytail, blue eyes, freckles, natural makeup, wearing shiny metallic blue swimsuit, sitting on chair, purple background lighting"
+"livapetersen, long platinum blonde hair, blue eyes, freckles, rosy cheeks, wearing red bodysuit, indoors, purple background"
+
+KEY REQUIREMENTS:
+1. Start with "livapetersen" followed by a comma
+2. Begin with hair description using "platinum blonde" consistently (e.g., "long platinum blonde wavy hair", "platinum blonde ponytail", "platinum blonde hair in bun")
+3. Follow with: blue eyes, freckles
+4. Then makeup style if visible (e.g., "soft makeup", "natural makeup", "rosy cheeks")
+5. Clothing with "wearing" (be specific but concise)
+6. End with setting/location and lighting
+7. Use SHORT comma-separated phrases, NO full sentences
+8. Keep it under 25 words after "livapetersen,"
+
+Create the caption for this image:"""
         
         response = model.generate_content([prompt, img])
         caption = response.text.strip()
+        
+        # Clean up the caption
+        caption = caption.replace('"', '').replace("'", '')
         
         # Ensure caption starts with "livapetersen"
         if not caption.lower().startswith("livapetersen"):
