@@ -32,3 +32,20 @@ Thumbs.db
 
 # Project specific
 *.zip
+
+# Images and captions - keep folder structure, ignore contents
+pictures/input/*
+!pictures/input/.gitkeep
+pictures/output/*.txt
+pictures/output/*.jpeg
+pictures/output/*.jpg
+pictures/output/*.png
+pictures/output/*.webp
+
+caption_gen/input/*
+!caption_gen/input/.gitkeep
+caption_gen/output/*.txt
+caption_gen/output/*.jpeg
+caption_gen/output/*.jpg
+caption_gen/output/*.png
+caption_gen/output/*.webp
